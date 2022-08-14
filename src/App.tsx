@@ -1,6 +1,25 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { Login } from "./Components/Login";
+import {
+  Route,
+  Routes as Switch,
+  useLocation,
+  useNavigate,
+  useParams
+} from "react-router-dom";
+import { Signup } from "./Components/Signup";
+
+function withRouter(App: any) {
+  function ComponentWithRouterProp(props: any) {
+    let location = useLocation();
+    let navigate = useNavigate();
+    let params = useParams();
+    return <App {...props} router={{ location, navigate, params }} />;
+  }
+
+  return ComponentWithRouterProp;
+}
 
 function App(props: any) {
   const [user, setUser] = useState(false);
@@ -23,6 +42,7 @@ function App(props: any) {
       .then(response => response.json())
       .then(data => {
         if (data) {
+          console.log(data);
           setUser(data.user);
           setIsUserLoaded(true);
         }
@@ -34,10 +54,10 @@ function App(props: any) {
     if (token) {
       retrieveUserProfile(token);
     } else {
-      props.history.push("/login");
       setIsUserLoaded(true);
+      props.history.push("/login");
     }
-  });
+  }, [props.history]);
 
   const signupHandler = (userObj: any) => {
     const configObj = {
@@ -110,7 +130,7 @@ function App(props: any) {
       body: JSON.stringify({ user: newUser })
     };
     // update when edit routes are created
-    fetch(`https://localhost:3001/api/v1/users/${'2'}`, configObj)
+    fetch(`https://localhost:3001/api/v1/users/${"2"}`, configObj)
       .then(response => response.json())
       .then(data => {
         updateUser(data.user);
@@ -123,8 +143,27 @@ function App(props: any) {
     props.history.push("/login");
     setUser(false);
   };
-  console.log(user);
-  return <>lalala</>;
+  return (
+    <Switch>
+      <Route path="/login">
+        <Login
+          authenticating={authenticating}
+          submitHandler={loginHandler}
+          authenticationError={authenticationError}
+          user={user}
+          clickHandler={logOutHandler}
+        />
+      </Route>
+      <Route path="/signup">
+        <Signup
+          submitHandler={signupHandler}
+          user={user}
+          clickHandler={logOutHandler}
+          signupError={signUpError}
+        />
+      </Route>
+    </Switch>
+  );
 }
 
-export default App;
+export default withRouter(App);
