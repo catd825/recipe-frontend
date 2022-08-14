@@ -53,7 +53,7 @@ function App(props: any) {
   useEffect(() => {
     const token = getToken();
     if (token) {
-      console.log(token)
+      console.log(isUserLoaded)
       retrieveUserProfile(token);
     } else {
       history("/login");
@@ -71,7 +71,7 @@ function App(props: any) {
       body: JSON.stringify({ user: userObj })
     };
 
-    fetch("https://localhost:3000/api/v1/users", configObj)
+    fetch("http://localhost:3000/api/v1/users", configObj)
       .then(response => response.json())
       .then(data => {
         if (data.jwt) {
@@ -94,7 +94,7 @@ function App(props: any) {
       body: JSON.stringify({ user: userInfo })
     };
 
-    fetch("https://localhost:3000/api/v1/users", configObj)
+    fetch("http://localhost:3000/api/v1/users", configObj)
       .then(response => response.json())
       .then(data => {
         if (data.jwt) {
@@ -132,7 +132,7 @@ function App(props: any) {
       body: JSON.stringify({ user: newUser })
     };
     // update when edit routes are created
-    fetch(`https://localhost:3000/api/v1/users/${"2"}`, configObj)
+    fetch(`http://localhost:3000/api/v1/users/${"2"}`, configObj)
       .then(response => response.json())
       .then(data => {
         updateUser(data.user);
