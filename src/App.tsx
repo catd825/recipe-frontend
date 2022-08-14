@@ -143,25 +143,32 @@ function App(props: any) {
     props.history.push("/login");
     setUser(false);
   };
+
   return (
     <Switch>
-      <Route path="/login">
-        <Login
-          authenticating={authenticating}
-          submitHandler={loginHandler}
-          authenticationError={authenticationError}
-          user={user}
-          clickHandler={logOutHandler}
-        />
-      </Route>
-      <Route path="/signup">
-        <Signup
-          submitHandler={signupHandler}
-          user={user}
-          clickHandler={logOutHandler}
-          signupError={signUpError}
-        />
-      </Route>
+      <Route
+        path="/login"
+        element={
+          <Login
+            authenticating={authenticating}
+            submitHandler={loginHandler}
+            authenticationError={authenticationError}
+            user={user}
+            clickHandler={logOutHandler}
+          />
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <Signup
+            submitHandler={signupHandler}
+            user={user}
+            clickHandler={logOutHandler}
+            signupError={signUpError}
+          />
+        }
+      />
     </Switch>
   );
 }
