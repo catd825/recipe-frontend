@@ -9,6 +9,7 @@ import {
   useParams
 } from "react-router-dom";
 import { Signup } from "./Components/Signup";
+import { RecipeContainer } from "./Containers/RecipeContainer";
 
 function withRouter(App: any) {
   function ComponentWithRouterProp(props: any) {
@@ -27,13 +28,14 @@ function App(props: any) {
   const [signUpError, setSignUpError] = useState(null);
   const [authenticationError, setAuthenticationError] = useState("");
   const [authenticating, setAuthenticating] = useState(false);
+  const history = useNavigate();
 
   const getToken = () => {
     return localStorage.getItem("token");
   };
 
   const retrieveUserProfile = (token: string) => {
-    fetch("http://localhost:3001/api/v1/profile", {
+    fetch("http://localhost:3000/api/v1/profile/", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`
@@ -42,7 +44,6 @@ function App(props: any) {
       .then(response => response.json())
       .then(data => {
         if (data) {
-          console.log(data);
           setUser(data.user);
           setIsUserLoaded(true);
         }
@@ -52,12 +53,13 @@ function App(props: any) {
   useEffect(() => {
     const token = getToken();
     if (token) {
+      console.log(token)
       retrieveUserProfile(token);
     } else {
+      history("/login");
       setIsUserLoaded(true);
-      props.history.push("/login");
     }
-  }, [props.history]);
+  }, []);
 
   const signupHandler = (userObj: any) => {
     const configObj = {
@@ -69,7 +71,7 @@ function App(props: any) {
       body: JSON.stringify({ user: userObj })
     };
 
-    fetch("https://localhost:3001/api/v1/users", configObj)
+    fetch("https://localhost:3000/api/v1/users", configObj)
       .then(response => response.json())
       .then(data => {
         if (data.jwt) {
@@ -92,7 +94,7 @@ function App(props: any) {
       body: JSON.stringify({ user: userInfo })
     };
 
-    fetch("https://localhost:3001/api/v1/users", configObj)
+    fetch("https://localhost:3000/api/v1/users", configObj)
       .then(response => response.json())
       .then(data => {
         if (data.jwt) {
@@ -130,7 +132,7 @@ function App(props: any) {
       body: JSON.stringify({ user: newUser })
     };
     // update when edit routes are created
-    fetch(`https://localhost:3001/api/v1/users/${"2"}`, configObj)
+    fetch(`https://localhost:3000/api/v1/users/${"2"}`, configObj)
       .then(response => response.json())
       .then(data => {
         updateUser(data.user);
@@ -151,10 +153,10 @@ function App(props: any) {
         element={
           <Login
             authenticating={authenticating}
-            submitHandler={loginHandler}
+            loginHandler={loginHandler}
             authenticationError={authenticationError}
             user={user}
-            clickHandler={logOutHandler}
+            logOutHandler={logOutHandler}
           />
         }
       />
@@ -166,6 +168,14 @@ function App(props: any) {
             user={user}
             clickHandler={logOutHandler}
             signupError={signUpError}
+          />
+        }
+      />
+      <Route
+        path="/"
+        element={
+          <RecipeContainer
+            user={user}
           />
         }
       />

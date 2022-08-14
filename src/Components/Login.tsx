@@ -1,23 +1,55 @@
 import { useState } from "react";
 
 export const Login = (props: any) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-//   console.log(props);
-  return <>login page!!</>;
+  const {
+    authenticating,
+    authenticationError,
+    loginHandler,
+    logOutHandler,
+    user
+  } = props;
+
+  const loginCredentials = {
+    username: "",
+    password: ""
+  };
+
+  const [loginState, setLoginState] = useState(loginCredentials);
+
+  const changeHandler = (event: any) => {
+    event.persist();
+    let updatedValue = {};
+    updatedValue = { [event.target.name]: event.target.value };
+    setLoginState(loginState => ({
+      ...loginState,
+      ...updatedValue
+    }));
+  };
+
+  const submitHandler = (event: any, loginState: any, props: any) => {
+    event.preventDefault();
+    const formData = loginState;
+    loginHandler(formData);
+  };
+
+  return (
+    <>
+      login page
+      {authenticating && "Authenticating"}
+      {!user && (
+        <form>
+          <input
+            type="text"
+            name="username"
+            placeholder="username"
+            value={loginState.username}
+            onChange={event => changeHandler(event)}
+          ></input>
+        </form>
+      )}
+    </>
+  );
 };
-
-//     changeHandler = (event) => {
-//         event.persist()
-//         this.setState({[event.target.name] : event.target.value})
-//     }
-
-//     submitHandler = (event) => {
-//         event.preventDefault()
-//         const formData = {username : this.state.username,
-//                          password: this.state.password}
-//         this.props.submitHandler(formData)
-//     }
 
 //     render () {
 //         return (
