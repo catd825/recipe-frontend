@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import { Signup } from "./Components/Signup";
 import { RecipeContainer } from "./Containers/RecipeContainer";
+import { IUser } from "./interfaces";
 
 function withRouter(App: any) {
   function ComponentWithRouterProp(props: any) {
@@ -34,7 +35,19 @@ function App(props: any) {
     return localStorage.getItem("token");
   };
 
-  const retrieveUserProfile = (token: string) => {
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      console.log("logged in");
+      retrieveUser(token);
+    } else {
+      console.log("did not login");
+      history("/login");
+      setIsUserLoaded(true);
+    }
+  }, []);
+
+  const retrieveUser = (token: string) => {
     fetch("http://localhost:3000/api/v1/profile/", {
       method: "GET",
       headers: {
@@ -45,45 +58,35 @@ function App(props: any) {
       .then(data => {
         if (data) {
           setUser(data.user);
-          setIsUserLoaded(true);
+        } else {
+          history("/signup");
         }
       });
   };
 
-  useEffect(() => {
-    const token = getToken();
-    if (token) {
-      console.log(isUserLoaded)
-      retrieveUserProfile(token);
-    } else {
-      history("/login");
-      setIsUserLoaded(true);
-    }
-  }, []);
-
-  const signupHandler = (userObj: any) => {
+  const signupHandler = (userObj: IUser) => {
     const configObj = {
       method: "POST",
       headers: {
-        accepts: "application/json",
-        "content-type": "application/json"
+        "Content-Type": "application/json",
+        "accepts": "application/json"
       },
       body: JSON.stringify({ user: userObj })
     };
-
     fetch("http://localhost:3000/api/v1/users", configObj)
       .then(response => response.json())
       .then(data => {
         if (data.jwt) {
           loginHandler(user);
           setUser(data.user);
+          history('/')
         } else {
           setSignUpError(data);
         }
       });
   };
 
-  const loginHandler = (userInfo: any) => {
+  const loginHandler = (loggedInUser: IUser | boolean) => {
     setAuthenticating(true);
     const configObj = {
       method: "POST",
@@ -91,17 +94,17 @@ function App(props: any) {
         accepts: "application/json",
         "content-type": "application/json"
       },
-      body: JSON.stringify({ user: userInfo })
+      body: JSON.stringify({ user: loggedInUser })
     };
 
-    fetch("http://localhost:3000/api/v1/users", configObj)
+    fetch("http://localhost:3000/api/v1/login", configObj)
       .then(response => response.json())
       .then(data => {
         if (data.jwt) {
           localStorage.setItem("token", data.jwt);
           setUser(data.user);
           setAuthenticating(false);
-          props.history.push("/");
+          history("/");
         } else {
           setAuthenticationError(data.message);
           setAuthenticating(true);
@@ -136,50 +139,47 @@ function App(props: any) {
       .then(response => response.json())
       .then(data => {
         updateUser(data.user);
-        props.history.push(`/users/${data.user.id}`);
+        history(`/users/${data.user.id}`);
       });
   };
 
   const logOutHandler = () => {
     localStorage.removeItem("token");
-    props.history.push("/login");
+    console.log("logging out");
+    history("/login");
     setUser(false);
   };
 
   return (
-    <Switch>
-      <Route
-        path="/login"
-        element={
-          <Login
-            authenticating={authenticating}
-            loginHandler={loginHandler}
-            authenticationError={authenticationError}
-            user={user}
-            logOutHandler={logOutHandler}
-          />
-        }
-      />
-      <Route
-        path="/signup"
-        element={
-          <Signup
-            submitHandler={signupHandler}
-            user={user}
-            clickHandler={logOutHandler}
-            signupError={signUpError}
-          />
-        }
-      />
-      <Route
-        path="/"
-        element={
-          <RecipeContainer
-            user={user}
-          />
-        }
-      />
-    </Switch>
+    <>
+      {user && <button onClick={() => logOutHandler()}>logout</button>}
+      <Switch>
+        <Route
+          path="/login"
+          element={
+            <Login
+              authenticating={authenticating}
+              loginHandler={loginHandler}
+              authenticationError={authenticationError}
+              user={user}
+              logOutHandler={logOutHandler}
+            />
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <Signup
+              submitHandler={signupHandler}
+              user={user}
+              clickHandler={logOutHandler}
+              signupError={signUpError}
+            />
+          }
+        />
+        <Route path="/" element={<RecipeContainer user={user} />} />
+      </Switch>
+    </>
   );
 }
 

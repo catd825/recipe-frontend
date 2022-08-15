@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { IUser } from '../interfaces'
+import { Link } from "react-router-dom";
+import { IUser } from "../interfaces";
 
 interface IProps {
   authenticating: boolean;
   authenticationError: string;
   loginHandler: (formData: IUser) => void;
   logOutHandler: () => void;
-  user: boolean | any;
+  user: boolean | IUser;
 }
 
 export const Login = (props: IProps) => {
@@ -24,7 +25,6 @@ export const Login = (props: IProps) => {
   };
 
   const [loginCredentials, setLoginCredentials] = useState(defaultLogin);
-  console.log(loginCredentials);
 
   const changeHandler = (event: any) => {
     event.persist();
@@ -65,6 +65,7 @@ export const Login = (props: IProps) => {
           <button>submit</button>
         </form>
       )}
+      <Link to="/signup">new here? sign up!</Link>
     </>
   );
 };

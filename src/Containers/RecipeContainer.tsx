@@ -1,3 +1,3 @@
 export const RecipeContainer = (props: any) => {
-    return <>"recipe container!!"</>
-}
+  return <>"recipe container!!"</>;
+};
