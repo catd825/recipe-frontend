@@ -11,6 +11,7 @@ import {
 import { Signup } from "./Components/Signup";
 import { RecipeContainer } from "./Containers/RecipeContainer";
 import { IUser } from "./interfaces";
+import { fetchUserInfo } from "./fetch/authFetchCalls";
 
 function withRouter(App: any) {
   function ComponentWithRouterProp(props: any) {
@@ -38,38 +39,19 @@ function App(props: any) {
   useEffect(() => {
     const token = getToken();
     if (token) {
-      console.log("logged in");
-      retrieveUser(token);
+      fetchUserInfo(token, setUser, history);
     } else {
-      console.log("did not login");
       history("/login");
       setIsUserLoaded(true);
     }
   }, []);
 
-  const retrieveUser = (token: string) => {
-    fetch("http://localhost:3000/api/v1/profile/", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data) {
-          setUser(data.user);
-        } else {
-          history("/signup");
-        }
-      });
-  };
-
-  const signupHandler = (userObj: IUser) => {
+  const signUpHandler = (userObj: IUser) => {
     const configObj = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "accepts": "application/json"
+        accepts: "application/json"
       },
       body: JSON.stringify({ user: userObj })
     };
@@ -79,7 +61,7 @@ function App(props: any) {
         if (data.jwt) {
           loginHandler(user);
           setUser(data.user);
-          history('/')
+          history("/");
         } else {
           setSignUpError(data);
         }
@@ -145,7 +127,6 @@ function App(props: any) {
 
   const logOutHandler = () => {
     localStorage.removeItem("token");
-    console.log("logging out");
     history("/login");
     setUser(false);
   };
@@ -170,7 +151,7 @@ function App(props: any) {
           path="/signup"
           element={
             <Signup
-              submitHandler={signupHandler}
+              submitHandler={signUpHandler}
               user={user}
               clickHandler={logOutHandler}
               signupError={signUpError}
