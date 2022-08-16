@@ -151,9 +151,9 @@ function App(props: any) {
           path="/signup"
           element={
             <Signup
-              submitHandler={signUpHandler}
+              signUpHandler={signUpHandler}
               user={user}
-              clickHandler={logOutHandler}
+              logOutHandler={logOutHandler}
               signupError={signUpError}
             />
           }

@@ -1,7 +1,11 @@
 import axios from "axios";
 import { IUser } from "../interfaces";
 
-export async function fetchUserInfo(token: string, setUser: any, history: any) {
+export const fetchUserInfo = async (
+  token: string,
+  setUser: any,
+  history: any
+) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`
@@ -19,34 +23,34 @@ export async function fetchUserInfo(token: string, setUser: any, history: any) {
     history("/signup");
     return error;
   }
-}
+};
 
-export async function signUpHandler(
-  token: string,
-  setUser: any,
-  loginHandler: any,
-  history: any,
-  setSignUpError: any,
-  userObj: IUser
-) {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify({ user: userObj })
-  };
-  try {
-    const response = await axios.post(
-      "http://localhost:3000/api/v1/users",
-      config
-    );
-    const { data } = response;
-    loginHandler(data.user);
-    setUser(data.user);
-    history("/");
-    return data;
-  } catch (error) {
-    setSignUpError(error);
-    return error;
-  }
-}
+// const signUpHandler = async (
+//   userObj: IUser,
+//   loginHandler: any,
+//   setUser: any,
+//   history: any,
+//   setSignUpError: any
+// ) => {
+//   const configObj = {
+//     // headers: {
+//     //   "Content-Type": "application/json",
+//     //   accepts: "application/json"
+//     // },
+//     body: JSON.stringify({ user: userObj })
+//   };
+//   try {
+//     const resp = await axios.post(
+//       "http://localhost:3000/api/v1/users",
+//       configObj
+//     );
+//     const { data } = resp;
+
+//     loginHandler(data.user);
+//     setUser(data.user);
+//     history("/");
+//   } catch (err) {
+//     setSignUpError(err);
+//     return err;
+//   }
+// };

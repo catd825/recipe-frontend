@@ -2,9 +2,9 @@ import { useState } from "react";
 import { IUser } from "../interfaces";
 
 interface IProps {
-  submitHandler: (user: IUser) => void;
+  signUpHandler: (user: IUser) => void;
   user: IUser | boolean;
-  clickHandler: () => void;
+  logOutHandler: () => void;
   signupError: string | null;
 }
 
@@ -27,16 +27,16 @@ export const Signup = (props: IProps) => {
     }));
   };
 
-  const submitHandler = (event: any) => {
+  const signUpHandler = (event: any) => {
     event.preventDefault();
     const formData = signUpCredentials;
-    props.submitHandler(formData);
+    props.signUpHandler(formData);
   };
 
   return (
     // add error handling - if empty fields, if user exists already, if password is invalid
     <>
-      <form onSubmit={event => submitHandler(event)}>
+      <form onSubmit={event => signUpHandler(event)}>
         <input
           type="text"
           name="username"
