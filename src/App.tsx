@@ -11,7 +11,7 @@ import {
 import { Signup } from "./Components/Signup";
 import { RecipeContainer } from "./Containers/RecipeContainer";
 import { IUser } from "./interfaces";
-import { fetchUserInfo } from "./fetch/authFetchCalls";
+import axios from "axios";
 
 function withRouter(App: any) {
   function ComponentWithRouterProp(props: any) {
@@ -36,6 +36,8 @@ function App(props: any) {
     return localStorage.getItem("token");
   };
 
+  const [token, setToken] = useState(getToken());
+
   useEffect(() => {
     const token = getToken();
     if (token) {
@@ -44,7 +46,27 @@ function App(props: any) {
       history("/login");
       setIsUserLoaded(true);
     }
-  }, []);
+  }, [history]);
+
+  const fetchUserInfo = async (token: string, setUser: any, history: any) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/v1/profile/",
+        config
+      );
+      const { data } = response;
+      setUser(data.user);
+      return data;
+    } catch (error) {
+      history("/signup");
+      return error;
+    }
+  };
 
   const signUpHandler = (userObj: IUser) => {
     const configObj = {
@@ -158,7 +180,7 @@ function App(props: any) {
             />
           }
         />
-        <Route path="/" element={<RecipeContainer user={user} />} />
+        <Route path="/" element={<RecipeContainer token={token} />} />
       </Switch>
     </>
   );
