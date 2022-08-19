@@ -46,7 +46,7 @@ function App(props: any) {
       history("/login");
       setIsUserLoaded(true);
     }
-  }, [history]);
+  }, []);
 
   const fetchUserInfo = async (token: string, setUser: any, history: any) => {
     const config = {

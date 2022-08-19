@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { IUser } from "../interfaces";
 
 interface IProps {
@@ -60,6 +61,7 @@ export const Signup = (props: IProps) => {
         />
         <button>submit</button>
       </form>
+      <Link to="/login">been here? log in!</Link>
     </>
   );
 };

@@ -1,4 +1,9 @@
+import { RecipeCard } from "./RecipeCard";
+
 export const RecipeList = (props: any) => {
-    console.log(props)
-    return <>'recipe list!'</>
-}
+  const { recipes } = props;
+
+  const mapRecipes = recipes.map((recipe: any) => <RecipeCard {...recipe} />);
+
+  return <>{mapRecipes}</>;
+};
