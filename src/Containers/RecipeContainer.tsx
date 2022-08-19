@@ -4,6 +4,7 @@ import { RecipeList } from "../Components/RecipeList";
 
 export const RecipeContainer = (token: any) => {
   const [recipes, setRecipes] = useState([]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getAllRecipes = async () => {
     const config = {
       headers: {
@@ -21,12 +22,7 @@ export const RecipeContainer = (token: any) => {
 
   useEffect(() => {
     getAllRecipes();
-  }, []);
-  console.log(recipes);
+  }, [getAllRecipes]);
 
-  return (
-    <>
-      <RecipeList recipes={recipes} />
-    </>
-  );
+  return <>{recipes.length > 0 && <RecipeList recipes={recipes} />}</>;
 };

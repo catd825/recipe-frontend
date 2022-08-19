@@ -1,3 +1,5 @@
-export const RecipeCard = (props: any) => {
-    return <>{props.title}</>
-}
+import { IRecipe } from "../interfaces";
+
+export const RecipeCard = (recipe: IRecipe) => {
+  return <>{recipe.title}</>;
+};

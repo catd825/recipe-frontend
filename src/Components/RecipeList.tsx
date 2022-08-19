@@ -1,9 +1,15 @@
+import { IRecipe } from "../interfaces";
 import { RecipeCard } from "./RecipeCard";
 
-export const RecipeList = (props: any) => {
-  const { recipes } = props;
+export interface IProps {
+  recipes: IRecipe[];
+}
 
-  const mapRecipes = recipes.map((recipe: any) => <RecipeCard {...recipe} />);
+export const RecipeList = (props: IProps) => {
+  const { recipes } = props;
+  const mapRecipes = recipes.map((recipe: IRecipe) => {
+    return <RecipeCard {...recipe} />;
+  });
 
   return <>{mapRecipes}</>;
 };
