@@ -11,4 +11,5 @@ export interface IRecipe {
   instructions: string;
   ingredients: string;
   recipe_creator_id: number;
+  id: number;
 }

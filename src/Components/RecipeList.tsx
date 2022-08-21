@@ -8,7 +8,7 @@ export interface IProps {
 export const RecipeList = (props: IProps) => {
   const { recipes } = props;
   const mapRecipes = recipes.map((recipe: IRecipe) => {
-    return <RecipeCard {...recipe} />;
+    return <RecipeCard {...recipe} key={recipe.id}/>;
   });
 
   return <>{mapRecipes}</>;

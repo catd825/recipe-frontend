@@ -35,25 +35,16 @@ function App(props: any) {
   const getToken = () => {
     return localStorage.getItem("token");
   };
-
   const [token, setToken] = useState(getToken());
 
-  useEffect(() => {
-    const token = getToken();
-    if (token) {
-      fetchUserInfo(token, setUser, history);
-    } else {
-      history("/login");
-      setIsUserLoaded(true);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`
     }
-  }, []);
+  };
 
-  const fetchUserInfo = async (token: string, setUser: any, history: any) => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchUserInfo = async (token: string | null) => {
     try {
       const response = await axios.get(
         "http://localhost:3000/api/v1/profile/",
@@ -68,14 +59,23 @@ function App(props: any) {
     }
   };
 
-  const signUpHandler = (userObj: IUser) => {
+  useEffect(() => {
+    if (token) {
+      fetchUserInfo(token);
+      setIsUserLoaded(true);
+    } else {
+      setIsUserLoaded(false);
+    }
+  }, []);
+
+  const signUpHandler = (newUser: IUser) => {
     const configObj = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         accepts: "application/json"
       },
-      body: JSON.stringify({ user: userObj })
+      body: JSON.stringify({ user: newUser })
     };
     fetch("http://localhost:3000/api/v1/users", configObj)
       .then(response => response.json())
@@ -83,7 +83,7 @@ function App(props: any) {
         if (data.jwt) {
           loginHandler(user);
           setUser(data.user);
-          history("/");
+          history("/recipes");
         } else {
           setSignUpError(data);
         }
@@ -106,9 +106,10 @@ function App(props: any) {
       .then(data => {
         if (data.jwt) {
           localStorage.setItem("token", data.jwt);
+          setToken(data.jwt);
           setUser(data.user);
           setAuthenticating(false);
-          history("/");
+          history("/recipes");
         } else {
           setAuthenticationError(data.message);
           setAuthenticating(true);
@@ -126,8 +127,6 @@ function App(props: any) {
       gender: userObj.gender,
       location: userObj.location
     };
-
-    const token = getToken();
 
     const configObj = {
       method: "PATCH",
@@ -149,6 +148,7 @@ function App(props: any) {
 
   const logOutHandler = () => {
     localStorage.removeItem("token");
+    setToken(null);
     history("/login");
     setUser(false);
   };
@@ -180,7 +180,19 @@ function App(props: any) {
             />
           }
         />
-        <Route path="/" element={<RecipeContainer token={token} />} />
+        <Route
+          path="/recipes/"
+          element={<RecipeContainer token={token} user={user} />}
+        />
+        <Route
+          path="/recipes/:id"
+          element={<RecipeContainer token={token} user={user} />}
+        />
+        {/* If user is not logged in - they can still see all recipes */}
+        <Route
+          path="/"
+          element={<RecipeContainer token={token} user={user} />}
+        />
       </Switch>
     </>
   );
