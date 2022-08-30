@@ -28,7 +28,6 @@ export const RecipeContainer = (props: any) => {
     let url = `http://localhost:3000/recipes/${id}`;
 
     const { data } = await axios(url, config);
-    console.log(data);
     setRecipe(data);
     return data;
   };

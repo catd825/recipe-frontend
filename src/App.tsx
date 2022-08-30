@@ -12,6 +12,8 @@ import { Signup } from "./Components/Signup";
 import { RecipeContainer } from "./Containers/RecipeContainer";
 import { IUser } from "./interfaces";
 import axios from "axios";
+import { Navbar } from "./Components/Navbar";
+import styled from "@emotion/styled";
 
 function withRouter(App: any) {
   function ComponentWithRouterProp(props: any) {
@@ -153,47 +155,53 @@ function App(props: any) {
     setUser(false);
   };
 
+  const BodyWrapper = styled.div({
+    marginTop: "140px"
+  })
+
   return (
     <>
-      {user && <button onClick={() => logOutHandler()}>logout</button>}
-      <Switch>
-        <Route
-          path="/login"
-          element={
-            <Login
-              authenticating={authenticating}
-              loginHandler={loginHandler}
-              authenticationError={authenticationError}
-              user={user}
-              logOutHandler={logOutHandler}
-            />
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <Signup
-              signUpHandler={signUpHandler}
-              user={user}
-              logOutHandler={logOutHandler}
-              signupError={signUpError}
-            />
-          }
-        />
-        <Route
-          path="/recipes/"
-          element={<RecipeContainer token={token} user={user} />}
-        />
-        <Route
-          path="/recipes/:id"
-          element={<RecipeContainer token={token} user={user} />}
-        />
-        {/* If user is not logged in - they can still see all recipes */}
-        <Route
-          path="/"
-          element={<RecipeContainer token={token} user={user} />}
-        />
-      </Switch>
+      <Navbar user={user} logout={() => logOutHandler()} />
+      <BodyWrapper>
+        <Switch>
+          <Route
+            path="/login"
+            element={
+              <Login
+                authenticating={authenticating}
+                loginHandler={loginHandler}
+                authenticationError={authenticationError}
+                user={user}
+                logOutHandler={logOutHandler}
+              />
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <Signup
+                signUpHandler={signUpHandler}
+                user={user}
+                logOutHandler={logOutHandler}
+                signupError={signUpError}
+              />
+            }
+          />
+          <Route
+            path="/recipes/"
+            element={<RecipeContainer token={token} user={user} />}
+          />
+          <Route
+            path="/recipes/:id"
+            element={<RecipeContainer token={token} user={user} />}
+          />
+          {/* If user is not logged in - they can still see all recipes */}
+          <Route
+            path="/"
+            element={<RecipeContainer token={token} user={user} />}
+          />
+        </Switch>
+      </BodyWrapper>
     </>
   );
 }
