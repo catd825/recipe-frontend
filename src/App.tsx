@@ -14,6 +14,7 @@ import { IUser } from "./interfaces";
 import axios from "axios";
 import { Navbar } from "./Components/Navbar";
 import styled from "@emotion/styled";
+import { MyRecipesContainer } from "./Containers/MyRecipesContainer";
 
 function withRouter(App: any) {
   function ComponentWithRouterProp(props: any) {
@@ -54,6 +55,7 @@ function App(props: any) {
       );
       const { data } = response;
       setUser(data.user);
+      console.log(data);
       return data;
     } catch (error) {
       history("/signup");
@@ -157,11 +159,11 @@ function App(props: any) {
 
   const BodyWrapper = styled.div({
     marginTop: "140px"
-  })
+  });
 
   return (
     <>
-      <Navbar user={user} logout={() => logOutHandler()} />
+      <Navbar user={user} logout={() => logOutHandler()} token={token} />
       <BodyWrapper>
         <Switch>
           <Route
@@ -186,6 +188,10 @@ function App(props: any) {
                 signupError={signUpError}
               />
             }
+          />
+          <Route
+            path="/users/:id/recipes"
+            element={<MyRecipesContainer token={token} user={user} />}
           />
           <Route
             path="/recipes/"

@@ -3,6 +3,7 @@ export interface IUser {
   password: string;
   bio?: string;
   location?: string;
+  id?: number;
 }
 
 export interface IRecipe {

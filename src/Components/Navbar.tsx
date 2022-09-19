@@ -24,13 +24,17 @@ export const Navbar = (props: any) => {
   });
 
   const { user, logout } = props;
+  console.log(user)
   const { pathname } = useLocation();
   return (
     <NavbarDiv>
       <SpanWrapper>
-      <NavSpan>{<Link to="/">Home</Link>}</NavSpan>
-      <NavSpan>{user && <button onClick={logout}>logout</button>}</NavSpan>
-      <NavSpan>{!user && pathname !== "/login" && <Link to="/login">Login!</Link>}</NavSpan>
+        <NavSpan>{<Link to='/'>Home</Link>}</NavSpan>
+        <NavSpan>{user?.id && <Link to={`/users/${user.id}/recipes`}>View my recipes</Link>}</NavSpan>
+        <NavSpan>{user && <button onClick={logout}>logout</button>}</NavSpan>
+        <NavSpan>
+          {!user && pathname !== "/login" && <Link to="/login">Login!</Link>}
+        </NavSpan>
       </SpanWrapper>
     </NavbarDiv>
   );
