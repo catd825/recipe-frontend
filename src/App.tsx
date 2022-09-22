@@ -15,6 +15,7 @@ import axios from "axios";
 import { Navbar } from "./Components/Navbar";
 import styled from "@emotion/styled";
 import { MyRecipesContainer } from "./Containers/MyRecipesContainer";
+import { AuthContext } from "./AuthContext";
 
 function withRouter(App: any) {
   function ComponentWithRouterProp(props: any) {
@@ -55,7 +56,6 @@ function App(props: any) {
       );
       const { data } = response;
       setUser(data.user);
-      console.log(data);
       return data;
     } catch (error) {
       history("/signup");
@@ -162,7 +162,7 @@ function App(props: any) {
   });
 
   return (
-    <>
+    <AuthContext.Provider value={{token, user}}>
       <Navbar user={user} logout={() => logOutHandler()} token={token} />
       <BodyWrapper>
         <Switch>
@@ -208,7 +208,7 @@ function App(props: any) {
           />
         </Switch>
       </BodyWrapper>
-    </>
+    </AuthContext.Provider>
   );
 }
 

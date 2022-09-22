@@ -3,9 +3,15 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { RecipeList } from "../Components/RecipeList";
 import { RecipeShowPage } from "../Components/RecipeShowPage";
+import { IUser } from "../interfaces";
 
-export const RecipeContainer = (props: any) => {
-  const { user, token } = props;
+interface IProps {
+  token: string | null;
+  user: IUser | boolean;
+}
+
+export const RecipeContainer = (props: IProps) => {
+  const { token, user } = props;
   const { id } = useParams();
   const [recipe, setRecipe] = useState({});
   const [recipes, setRecipes] = useState([]);

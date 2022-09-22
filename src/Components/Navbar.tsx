@@ -24,7 +24,6 @@ export const Navbar = (props: any) => {
   });
 
   const { user, logout } = props;
-  console.log(user)
   const { pathname } = useLocation();
   return (
     <NavbarDiv>

@@ -1,10 +1,10 @@
 import axios from "axios";
-import { IUser } from "../interfaces";
+import { useContext } from "react";
+import { AuthContext } from "../AuthContext";
 
 export const MyRecipesContainer = (props: any) => {
     const {token, user} = props;
 
-    console.log(token )
     const config = {
         headers: {
           Authorization: `Bearer ${token}`
@@ -19,7 +19,6 @@ export const MyRecipesContainer = (props: any) => {
             config
           );
           const { data } = response;
-          console.log(data);
           return data;
         } catch (error) {
         // add action
