@@ -13,4 +13,5 @@ export interface IRecipe {
   ingredients: string;
   recipe_creator_id: number;
   id: number;
+  img_url: string;
 }
