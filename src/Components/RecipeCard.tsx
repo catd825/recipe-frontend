@@ -18,6 +18,9 @@ export const RecipeCard = (recipe: IRecipe) => {
   const avatar = recipe.creator_name.charAt(0);
   const limitedDescription =
     recipe.description.split(" ").slice(0, 25).join(" ") + "...";
+  const convertedDesc = (
+    <div dangerouslySetInnerHTML={{ __html: limitedDescription }}></div>
+  );
 
   return (
     <NavLink to={`/recipes/${recipe.id}`}>
@@ -45,7 +48,7 @@ export const RecipeCard = (recipe: IRecipe) => {
           />
           <CardContent>
             <Typography variant="body2" color="text.secondary">
-              {limitedDescription}
+              {convertedDesc}
             </Typography>
           </CardContent>
           <CardActions disableSpacing>
