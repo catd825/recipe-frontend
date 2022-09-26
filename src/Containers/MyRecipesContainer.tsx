@@ -1,30 +1,42 @@
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { MyRecipeList } from "../Components/MyRecipeList";
+import { RecipeList } from "../Components/RecipeList";
 
 export const MyRecipesContainer = (props: any) => {
-    const {token, user} = props;
+  const { token, user } = props;
+  const [myRecipes, setMyRecipes] = useState([]);
 
-    const config = {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      };
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  };
 
-    const getMyRecipes = async (userId: any) => {
+  const getMyRecipes = async (userId: any) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/v1/users/${userId}/recipes`,
+        config
+      );
+      const { data } = response;
+      console.log(data);
+      setMyRecipes(data);
 
-        try {
-          const response = await axios.get(
-            `http://localhost:3000/api/v1/users/${userId}/recipes`,
-            config
-          );
-          const { data } = response;
-          return data;
-        } catch (error) {
-        // add action
-          return error;
-        }
-      };
-    
+      return data;
+    } catch (error) {
+      // add action
+      return error;
+    }
+  };
 
+  useEffect(() => {
+    if (user.id) {
+      {
+        getMyRecipes(user.id);
+      }
+    }
+  }, []);
 
-    return(<>{getMyRecipes(user.id)}</>)
-}
+  return <RecipeList recipes={myRecipes} />;
+};
