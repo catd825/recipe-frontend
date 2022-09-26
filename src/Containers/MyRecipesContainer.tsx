@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useContext } from "react";
-import { AuthContext } from "../AuthContext";
 
 export const MyRecipesContainer = (props: any) => {
     const {token, user} = props;

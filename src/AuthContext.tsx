@@ -3,7 +3,8 @@ import { IUser } from "./interfaces";
 
 interface AuthContextInterface {
     token: string | null;
-    user: boolean | IUser
+    // will fix later
+    user: any;
 }
 
 export const AuthContext = createContext<AuthContextInterface | null>(null);

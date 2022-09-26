@@ -4,6 +4,7 @@ export interface IUser {
   bio?: string;
   location?: string;
   id?: number;
+  name?: string;
 }
 
 export interface IRecipe {
@@ -14,4 +15,6 @@ export interface IRecipe {
   recipe_creator_id: number;
   id: number;
   img_url: string;
+  creator_name: string;
+  created_at: string;
 }
