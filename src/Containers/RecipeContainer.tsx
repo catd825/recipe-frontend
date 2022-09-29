@@ -51,7 +51,11 @@ export const RecipeContainer = (props: IProps) => {
       {id && token && user ? (
         <RecipeShowPage user={user} token={token} recipe={recipe} />
       ) : (
-        recipes.length > 0 && <RecipeList recipes={recipes} />
+        <div>
+          Recipe list
+          <br/>
+          {recipes.length > 0 && <RecipeList recipes={recipes} />}
+        </div>
       )}
     </>
   );

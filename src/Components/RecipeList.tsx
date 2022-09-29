@@ -9,6 +9,7 @@ export interface IProps {
 
 export const RecipeList = (props: IProps) => {
   const { recipes } = props;
+
   const mapRecipes = recipes.map((recipe: IRecipe) => {
     return (
       <Box sx={{ display: "inline-flex" }}>

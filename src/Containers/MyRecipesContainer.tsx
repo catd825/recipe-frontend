@@ -20,7 +20,6 @@ export const MyRecipesContainer = (props: any) => {
         config
       );
       const { data } = response;
-      console.log(data);
       setMyRecipes(data);
 
       return data;
@@ -32,11 +31,15 @@ export const MyRecipesContainer = (props: any) => {
 
   useEffect(() => {
     if (user.id) {
-      {
-        getMyRecipes(user.id);
-      }
+      getMyRecipes(user.id);
     }
   }, []);
 
-  return <RecipeList recipes={myRecipes} />;
+  return (
+    <div>
+      My Recipes
+      <br/>
+      <RecipeList recipes={myRecipes} />
+    </div>
+  );
 };
