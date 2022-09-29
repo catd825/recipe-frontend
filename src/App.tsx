@@ -16,6 +16,7 @@ import { Navbar } from "./Components/Navbar";
 import styled from "@emotion/styled";
 import { MyRecipesContainer } from "./Containers/MyRecipesContainer";
 import { AuthContext } from "./AuthContext";
+import { FavoriteRecipesContainer } from "./Containers/FavoriteRecipesContainer";
 
 function withRouter(App: any) {
   function ComponentWithRouterProp(props: any) {
@@ -162,7 +163,7 @@ function App(props: any) {
   });
 
   return (
-    <AuthContext.Provider value={{token, user}}>
+    <AuthContext.Provider value={{ token, user }}>
       <Navbar user={user} logout={() => logOutHandler()} token={token} />
       <BodyWrapper>
         <Switch>
@@ -192,6 +193,10 @@ function App(props: any) {
           <Route
             path="/users/:id/recipes"
             element={<MyRecipesContainer token={token} user={user} />}
+          />
+          <Route
+            path="/users/:id/favorite_recipes"
+            element={<FavoriteRecipesContainer token={token} user={user} />}
           />
           <Route
             path="/recipes/"

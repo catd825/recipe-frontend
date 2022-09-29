@@ -50,24 +50,24 @@ export const RecipeCard = (recipe: IRecipe) => {
       });
   };
 
-  const removeFavorite = (id: number) => {
-    axios
-      .delete(
-        `http://localhost:3000/favorite_recipes/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authContext?.token}`
-          }
-        }
-      )
-      .then(function (response) {
-        console.log(response);
-        setIsFavorite(false)
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
+  // const removeFavorite = (id: number) => {
+  //   axios
+  //     .delete(
+  //       `http://localhost:3000/favorite_recipes/${id}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${authContext?.token}`
+  //         }
+  //       }
+  //     )
+  //     .then(function (response) {
+  //       console.log(response);
+  //       setIsFavorite(false)
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // };
 
 
   return (
