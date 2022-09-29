@@ -13,6 +13,9 @@ import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useContext, useState } from "react";
+import axios from "axios";
+import { AuthContext } from "../AuthContext";
 
 export const RecipeCard = (recipe: IRecipe) => {
   const avatar = recipe.creator_name.charAt(0);
@@ -21,11 +24,56 @@ export const RecipeCard = (recipe: IRecipe) => {
   const convertedDesc = (
     <div dangerouslySetInnerHTML={{ __html: limitedDescription }}></div>
   );
+  const [isFavorite, setIsFavorite] = useState(false);
+  const authContext = useContext(AuthContext);
+
+  const addFavorite = () => {
+    axios
+      .post(
+        "http://localhost:3000/favorite_recipes",
+        {
+          recipe_id: recipe.id,
+          recipe_liker_id: authContext?.user.id
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authContext?.token}`
+          }
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+        setIsFavorite(true);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const removeFavorite = (id: number) => {
+    axios
+      .delete(
+        `http://localhost:3000/favorite_recipes/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authContext?.token}`
+          }
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+        setIsFavorite(false)
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
 
   return (
-    <NavLink to={`/recipes/${recipe.id}`}>
-      <Grid style={{ margin: 20 }}>
-        <Card sx={{ maxWidth: 345 }}>
+    <Grid style={{ margin: 20 }}>
+      <Card sx={{ maxWidth: 345 }}>
+        <NavLink to={`/recipes/${recipe.id}`}>
           <CardHeader
             avatar={
               <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -40,27 +88,30 @@ export const RecipeCard = (recipe: IRecipe) => {
             title={recipe.title}
             subheader={recipe.created_at}
           />
-          <CardMedia
-            component="img"
-            height="194"
-            image={recipe.img_url}
-            alt={recipe.title}
-          />
-          <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              {convertedDesc}
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="share">
-              <ShareIcon />
-            </IconButton>
-          </CardActions>
-        </Card>
-      </Grid>
-    </NavLink>
+        </NavLink>
+        <CardMedia
+          component="img"
+          height="194"
+          image={recipe.img_url}
+          alt={recipe.title}
+        />
+        <CardContent>
+          <Typography variant="body2" color="text.secondary">
+            {convertedDesc}
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+          <IconButton aria-label="add to favorites">
+            <FavoriteIcon
+              sx={{ color: isFavorite ? "red" : "black" }}
+              onClick={() => addFavorite()}
+            />
+          </IconButton>
+          <IconButton aria-label="share">
+            <ShareIcon />
+          </IconButton>
+        </CardActions>
+      </Card>
+    </Grid>
   );
 };

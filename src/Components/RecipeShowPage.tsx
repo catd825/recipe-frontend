@@ -1,9 +1,7 @@
-import { useParams } from "react-router-dom";
 import Container from "@mui/material/Container";
 
 export const RecipeShowPage = (props: any) => {
   const { recipe } = props;
-  const { id } = useParams();
   const convertedDesc = (
     <div dangerouslySetInnerHTML={{ __html: recipe.description }}></div>
   );
