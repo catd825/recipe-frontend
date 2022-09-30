@@ -39,7 +39,7 @@ export const FavoriteRecipesContainer = (props: any) => {
     <>
       My Recipes
       <br />
-      {/* <RecipeList recipes={myFavoriteRecipes} /> */}
+      <RecipeList recipes={myFavoriteRecipes} />
     </>
   );
 };

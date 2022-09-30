@@ -54,7 +54,7 @@ export const RecipeContainer = (props: IProps) => {
         <div>
           Recipe list
           <br />
-          {recipes.length > 0 && <RecipeList recipes={recipes} />}
+          {<RecipeList recipes={recipes} />}
         </div>
       )}
     </>
