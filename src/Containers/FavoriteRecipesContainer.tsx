@@ -5,7 +5,6 @@ import { RecipeList } from "../Components/RecipeList";
 export const FavoriteRecipesContainer = (props: any) => {
   const { token, user } = props;
   const [myFavoriteRecipes, setMyFavoriteRecipes] = useState([]);
-  const [recipeIsFavorited, setRecipeIsFavorited] = useState(true);
 
   const config = {
     headers: {
@@ -35,13 +34,11 @@ export const FavoriteRecipesContainer = (props: any) => {
     }
   }, []);
 
-  console.log(recipeIsFavorited)
-  
   return (
     <>
       My Recipes
       <br />
-      <RecipeList recipeIsFavorited={recipeIsFavorited} recipes={myFavoriteRecipes} />
+      <RecipeList recipes={myFavoriteRecipes} />
     </>
   );
 };

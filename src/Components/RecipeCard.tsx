@@ -19,11 +19,11 @@ import { AuthContext } from "../AuthContext";
 
 interface IProps {
   recipe: IRecipe;
-  recipeIsFavorited?: boolean
+
 }
 
 export const RecipeCard = (props: IProps) => {
-  const {recipe, recipeIsFavorited} = props
+  const {recipe} = props
   const avatar = recipe.creator_name.charAt(0);
   const limitedDescription =
     recipe.description.split(" ").slice(0, 25).join(" ") + "...";
@@ -31,10 +31,9 @@ export const RecipeCard = (props: IProps) => {
     <div dangerouslySetInnerHTML={{ __html: limitedDescription }}></div>
   );
 
-  const [isFavorite, setIsFavorite] = useState(recipeIsFavorited);
+  const [isFavorite, setIsFavorite] = useState(false);
   const authContext = useContext(AuthContext);
 
-  console.log(recipeIsFavorited)
   const addFavorite = () => {
     axios
       .post(
