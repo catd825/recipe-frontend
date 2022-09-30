@@ -5,16 +5,17 @@ import Box from "@mui/material/Box";
 
 export interface IProps {
   recipes: IRecipe[];
+  recipeIsFavorited?: boolean;
 }
 
 export const RecipeList = (props: IProps) => {
-  const { recipes } = props;
+  const { recipes, recipeIsFavorited } = props;
 
   const mapRecipes = recipes.map((recipe: IRecipe) => {
     return (
       <Box sx={{ display: "inline-flex" }}>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <RecipeCard {...recipe} key={recipe.id} />
+          <RecipeCard recipeIsFavorited={recipeIsFavorited} recipe={recipe} key={recipe.id} />
         </Grid>
       </Box>
     );

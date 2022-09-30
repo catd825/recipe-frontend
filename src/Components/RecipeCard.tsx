@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { IRecipe } from "../interfaces";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -10,23 +10,31 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useContext, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
 
-export const RecipeCard = (recipe: IRecipe) => {
+
+interface IProps {
+  recipe: IRecipe;
+  recipeIsFavorited?: boolean
+}
+
+export const RecipeCard = (props: IProps) => {
+  const {recipe, recipeIsFavorited} = props
   const avatar = recipe.creator_name.charAt(0);
   const limitedDescription =
     recipe.description.split(" ").slice(0, 25).join(" ") + "...";
   const convertedDesc = (
     <div dangerouslySetInnerHTML={{ __html: limitedDescription }}></div>
   );
-  const [isFavorite, setIsFavorite] = useState(false);
+
+  const [isFavorite, setIsFavorite] = useState(recipeIsFavorited);
   const authContext = useContext(AuthContext);
 
+  console.log(recipeIsFavorited)
   const addFavorite = () => {
     axios
       .post(
@@ -50,24 +58,24 @@ export const RecipeCard = (recipe: IRecipe) => {
       });
   };
 
-  // const removeFavorite = (id: number) => {
-  //   axios
-  //     .delete(
-  //       `http://localhost:3000/favorite_recipes/${id}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${authContext?.token}`
-  //         }
-  //       }
-  //     )
-  //     .then(function (response) {
-  //       console.log(response);
-  //       setIsFavorite(false)
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // };
+  const removeFavorite = (id: number) => {
+    axios
+      .delete(
+        `http://localhost:3000/favorite_recipes/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authContext?.token}`
+          }
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+        setIsFavorite(false)
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
 
   return (
@@ -102,13 +110,12 @@ export const RecipeCard = (recipe: IRecipe) => {
         </CardContent>
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites">
-            <FavoriteIcon
-              sx={{ color: isFavorite ? "red" : "black" }}
+            <BookmarkIcon
+              sx={{ color: isFavorite ? "blue" : "black" }}
               onClick={() => addFavorite()}
             />
           </IconButton>
           <IconButton aria-label="share">
-            <ShareIcon />
           </IconButton>
         </CardActions>
       </Card>

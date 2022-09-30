@@ -30,6 +30,7 @@ export const Navbar = (props: any) => {
       <SpanWrapper>
         <NavSpan>{<Link to='/'>Home</Link>}</NavSpan>
         <NavSpan>{user?.id && <Link to={`/users/${user.id}/recipes`}>View my recipes</Link>}</NavSpan>
+        <NavSpan>{user?.id && <Link to={`/users/${user.id}/favorite_recipes`}>View my favorite recipes</Link>}</NavSpan>
         <NavSpan>{user && <button onClick={logout}>logout</button>}</NavSpan>
         <NavSpan>
           {!user && pathname !== "/login" && <Link to="/login">Login!</Link>}

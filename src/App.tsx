@@ -122,34 +122,34 @@ function App(props: any) {
       });
   };
 
-  const updateUser = (userData: any) => {
-    setUser(userData);
-  };
+  // const updateUser = (userData: any) => {
+  //   setUser(userData);
+  // };
 
-  const editHandler = (userObj: any) => {
-    let newUser = {
-      birthdate: userObj.birthdate,
-      gender: userObj.gender,
-      location: userObj.location
-    };
+  // const editHandler = (userObj: any) => {
+  //   let newUser = {
+  //     birthdate: userObj.birthdate,
+  //     gender: userObj.gender,
+  //     location: userObj.location
+  //   };
 
-    const configObj = {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({ user: newUser })
-    };
-    // update when edit routes are created
-    fetch(`http://localhost:3000/api/v1/users/${"2"}`, configObj)
-      .then(response => response.json())
-      .then(data => {
-        updateUser(data.user);
-        history(`/users/${data.user.id}`);
-      });
-  };
+  //   const configObj = {
+  //     method: "PATCH",
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       "Content-Type": "application/json",
+  //       Accept: "application/json"
+  //     },
+  //     body: JSON.stringify({ user: newUser })
+  //   };
+  //   // update when edit routes are created
+  //   fetch(`http://localhost:3000/api/v1/users/${"2"}`, configObj)
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       updateUser(data.user);
+  //       history(`/users/${data.user.id}`);
+  //     });
+  // };
 
   const logOutHandler = () => {
     localStorage.removeItem("token");
