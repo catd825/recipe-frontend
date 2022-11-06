@@ -10,20 +10,18 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
-import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useContext, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
 
-
 interface IProps {
-  recipe: IRecipe;
-
+  recipe: any;
 }
 
 export const RecipeCard = (props: IProps) => {
-  const {recipe} = props
+  const { recipe } = props;
   const avatar = recipe.creator_name.charAt(0);
   const limitedDescription =
     recipe.description.split(" ").slice(0, 25).join(" ") + "...";
@@ -31,8 +29,10 @@ export const RecipeCard = (props: IProps) => {
     <div dangerouslySetInnerHTML={{ __html: limitedDescription }}></div>
   );
 
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(recipe.liked_by_current_user);
+  const [favoriteId, setFavoriteId] = useState(recipe.favorite_id)
   const authContext = useContext(AuthContext);
+  console.log(favoriteId)
 
   const addFavorite = () => {
     axios
@@ -49,8 +49,8 @@ export const RecipeCard = (props: IProps) => {
         }
       )
       .then(function (response) {
-        console.log(response);
         setIsFavorite(true);
+        setFavoriteId(response.data.id)
       })
       .catch(function (error) {
         console.log(error);
@@ -59,23 +59,18 @@ export const RecipeCard = (props: IProps) => {
 
   const removeFavorite = (id: number) => {
     axios
-      .delete(
-        `http://localhost:3000/favorite_recipes/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authContext?.token}`
-          }
+      .delete(`http://localhost:3000/favorite_recipes/${id}`, {
+        headers: {
+          Authorization: `Bearer ${authContext?.token}`
         }
-      )
+      })
       .then(function (response) {
-        console.log(response);
-        setIsFavorite(false)
+        setIsFavorite(false);
       })
       .catch(function (error) {
         console.log(error);
       });
   };
-
 
   return (
     <Grid style={{ margin: 20 }}>
@@ -111,11 +106,14 @@ export const RecipeCard = (props: IProps) => {
           <IconButton aria-label="add to favorites">
             <BookmarkIcon
               sx={{ color: isFavorite ? "blue" : "black" }}
-              onClick={() => addFavorite()}
+              onClick={
+                isFavorite
+                  ? () => removeFavorite(favoriteId)
+                  : () => addFavorite()
+              }
             />
           </IconButton>
-          <IconButton aria-label="share">
-          </IconButton>
+          <IconButton aria-label="share"></IconButton>
         </CardActions>
       </Card>
     </Grid>

@@ -2,6 +2,7 @@ import Container from "@mui/material/Container";
 
 export const RecipeShowPage = (props: any) => {
   const { recipe } = props;
+  console.log(recipe)
   const convertedDesc = (
     <div dangerouslySetInnerHTML={{ __html: recipe.description }}></div>
   );

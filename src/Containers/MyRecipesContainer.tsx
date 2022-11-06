@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { MyRecipeList } from "../Components/MyRecipeList";
 import { RecipeList } from "../Components/RecipeList";
 
 export const MyRecipesContainer = (props: any) => {

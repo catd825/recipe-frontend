@@ -10,7 +10,7 @@ export interface IProps {
 export const RecipeList = (props: IProps) => {
   const { recipes} = props;
 
-  const mapRecipes = recipes.map((recipe: IRecipe) => {
+  const mapRecipes = recipes.map((recipe: any) => {
     return (
       <Box sx={{ display: "inline-flex" }}>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
