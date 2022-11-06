@@ -32,7 +32,6 @@ export const RecipeCard = (props: IProps) => {
   const [isFavorite, setIsFavorite] = useState(recipe.liked_by_current_user);
   const [favoriteId, setFavoriteId] = useState(recipe.favorite_id)
   const authContext = useContext(AuthContext);
-  console.log(favoriteId)
 
   const addFavorite = () => {
     axios
