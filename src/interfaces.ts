@@ -17,4 +17,7 @@ export interface IRecipe {
   img_url: string;
   creator_name: string;
   created_at: string;
+  // fix later
+  favorite_id?: any;
+  liked_by_current_user?: boolean;
 }

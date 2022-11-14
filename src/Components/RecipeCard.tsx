@@ -17,7 +17,7 @@ import axios from "axios";
 import { AuthContext } from "../AuthContext";
 
 interface IProps {
-  recipe: any;
+  recipe: IRecipe;
 }
 
 export const RecipeCard = (props: IProps) => {

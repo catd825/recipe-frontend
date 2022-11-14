@@ -36,7 +36,7 @@ export const FavoriteRecipesContainer = (props: any) => {
 
   return (
     <>
-      My Recipes
+      My Favorite Recipes
       <br />
       <RecipeList recipes={myFavoriteRecipes} />
     </>
